@@ -1,28 +1,62 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { Dimensions, StyleSheet, TextInput, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, TextInput, Text, View, TouchableHighlight } from 'react-native';
 
-const App = () => {
-  const [value, onChangeText] = React.useState('0');
+export default function App(){
+  const [origPrice, setOrigPrice] = useState();
+  const [discount, setDiscount] = useState();
+  const [savePrice, setSavePrice] = useState();
+  const [finalPrice, setFinalPrice] = useState();
+
+  // // const [save, setsave] = useState(initialState)
+
+  // const onPressChange = () => {
+    // }
+    
+    handleCount = () => {
+      const x = (origPrice*discount)/100;
+      setSavePrice(x);
+      const y = origPrice - x;
+      setFinalPrice(y);
+
+  }
   return (
     <View style={styles.container}>
-      <Text style={styles.textHeadings}>
-        Enter Original Price
-      </Text>
-      <TextInput
-        style={styles.fields}
-        onChangeText={text => onChangeText(text)}
-        value={value}
-      />
-      <Text style={styles.textHeadings}>
-        Enter Disount Percentage
-      </Text>
-      <TextInput
-        style={styles.fields}
-        onChangeText={text => onChangeText(text)}
-        value={value}
-      />
-      <StatusBar style='auto'/>
+      <View style={styles.upper}>
+        <Text style={styles.textHeadings}>
+          Enter Original Price
+        </Text>
+        <TextInput style={styles.fields}
+          onChangeText={text => setOrigPrice(text)}
+          value={origPrice}
+          keyboardType="number-pad"
+          placeholder="0"
+          placeholderTextColor='white'
+          />
+        <Text style={styles.textHeadings}>
+          Enter Disount Percentage
+        </Text>
+        <TextInput
+          style={styles.fields}
+          onChangeText={text => setDiscount(text)}
+          value={discount}
+          keyboardType="number-pad"
+          placeholder="0"
+          placeholderTextColor='white'
+          onSubmitEditing={handleCount}
+        />
+      </View>
+      <View style={styles.lower}>
+        <View style={styles.lowerFields}>
+            <Text style={[styles.lowerFieldsStyle, { color: 'white' } ]}>You Save:</Text>
+            <Text style={[styles.lowerFieldsStyle, { color: 'green' } ]}>{savePrice} </Text>
+        </View>
+        <View style={styles.lowerFields}>
+            <Text style={[styles.lowerFieldsStyle, { color: 'white' } ]}>Final Price:</Text>
+            <Text style={[styles.lowerFieldsStyle, { color: 'green' } ]}>{finalPrice} </Text>
+        </View>
+      </View>
+      <StatusBar style="auto" />
     </View>
   );
 }
@@ -33,6 +67,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  upper: {
+    flex: 0.3,
+    backgroundColor: 'black',
+    justifyContent: 'flex-end',
+  },
   textHeadings: {
     color: 'white',
     fontSize: 20,
@@ -40,16 +79,51 @@ const styles = StyleSheet.create({
   },
   fields: {
     alignItems: 'flex-end',
+    backgroundColor: 'black',
     borderColor: 'green', 
     borderWidth: 1,
-    color: 'yellow',
-    backgroundColor: 'blue',
-    textAlign: 'right',
+    color: 'white',
     height: 40,
     justifyContent: 'flex-end',
-    // width: Dimensions.get('screen').width - 30,
+    padding: 8,
+    textAlign: 'right',
     width: 250,
   },
+  middle: {
+    alignItems: 'center',
+    flex: 0.1,
+    backgroundColor: 'black',
+    justifyContent: 'center'
+  },
+  button: {
+    borderColor: 'green',
+    borderRadius: 15,
+    borderWidth: 4,
+    height: 50,
+    textAlign: 'center',
+    width: 230,
+  },
+  lower: {
+    backgroundColor: 'black',
+    flex: 0.3,
+    paddingTop: 15,
+    width: 250,
+  },
+  lowerFields: {
+    color: 'white',
+    backgroundColor: 'black',
+    flexDirection:'row',
+    justifyContent:'space-between',
+    margin: 3,
+    paddingHorizontal: 10,
+  },
+  lowerFieldsStyle: {
+    backgroundColor: 'black',
+    fontSize: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 3,
+    padding: 10, 
+    
+},
 })
-
-export default App;
