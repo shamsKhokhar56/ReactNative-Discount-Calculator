@@ -1,27 +1,32 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, TextInput, Text, View } from 'react-native';
 
 export default function App(){
-  const [origPrice, setOrigPrice] = useState();
-  const [discount, setDiscount] = useState();
+  const [origPrice, setOrigPrice] = useState('');
+  const [discount, setDiscount] = useState('');
   const [savePrice, setSavePrice] = useState();
   const [finalPrice, setFinalPrice] = useState();
-
-  // // const [save, setsave] = useState(initialState)
-
-  // const onPressChange = () => {
-    // }
     
-    handleCount = () => {
-      const x = (origPrice*discount)/100;
+  handleCount = () => {
+    if(discount > 100){
+      alert("Discount percentage cannot be greater than 100");
+    }
+    else if(discount <= 100 && origPrice === ''){
+      alert("Original price cannot be empty")
+    }
+    else{ 
+      var x = (origPrice*discount)/100;
       setSavePrice(x);
       const y = origPrice - x;
       setFinalPrice(y);
-
+    }
   }
   return (
     <View style={styles.container}>
+      <Text style={styles.headingText}>
+          Discount Calculator
+      </Text>
       <View style={styles.upper}>
         <Text style={styles.textHeadings}>
           Enter Original Price
@@ -67,6 +72,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  headingText: {
+    fontSize: 40,
+    color: 'white'
+  },
   upper: {
     flex: 0.3,
     backgroundColor: 'black',
@@ -74,7 +83,7 @@ const styles = StyleSheet.create({
   },
   textHeadings: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 15,
     margin: 10
   },
   fields: {
@@ -87,7 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     padding: 8,
     textAlign: 'right',
-    width: 250,
+    width: 350,
   },
   middle: {
     alignItems: 'center',
